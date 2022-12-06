@@ -1,12 +1,15 @@
-import sys, pygame,random
+import sys
+import pygame
+import random
+
 
 def collision(ball, bar, bar_targets, speed_ball, direc_ball):
-    #x
+    # x
     if (ball.x + 20) >= 650:
         direc_ball[0] = -speed_ball[0]
     elif ball.x <= 0:
         direc_ball[0] = speed_ball[0]
-    #y
+    # y
     if ball.y <= 0:
         direc_ball[1] = speed_ball[1]
     elif ball.colliderect(bar) == 1:
@@ -35,22 +38,28 @@ def collision(ball, bar, bar_targets, speed_ball, direc_ball):
 def to_move(ball, speed_ball):
     ball.move_ip(speed_ball)
 
+
 def target(bar_targets):
     top = 65
-    width = [50, 50, 45, 45, 44, 40, 40, 36, 37, 35, 35, 30, 30, 28, 28, 25, 20]
+    width = [50, 50, 45, 45, 44, 40, 40, 36,
+             37, 35, 35, 30, 30, 28, 28, 25, 20]
 
     keys = ['targets_red', 'targets_yellow', 'targets_green']
-    for xx in range(0,3):
+    for xx in range(0, 3):
         width = random.sample(width, 17)
 
-        for i in range(0,17):
+        for i in range(0, 17):
             one_width = width[i]
             if i == 0:
-                bar_targets[keys[xx]].append(pygame.Rect(0, top, one_width, 20))
+                bar_targets[keys[xx]].append(
+                    pygame.Rect(0, top, one_width, 20))
             else:
-                x = (bar_targets[keys[xx]][-1].x + bar_targets[keys[xx]][-1].width) + 2
-                bar_targets[keys[xx]].append(pygame.Rect(x, top, one_width, 20))
+                x = (bar_targets[keys[xx]][-1].x +
+                     bar_targets[keys[xx]][-1].width) + 2
+                bar_targets[keys[xx]].append(
+                    pygame.Rect(x, top, one_width, 20))
         top += 22
+
 
 def text(answer, color, score, cor_text, spped_ball):
     line = cor_text
@@ -78,34 +87,33 @@ def text(answer, color, score, cor_text, spped_ball):
     else:
         position = (610, 8)
 
-
     return [score, line, position]
 
-#main
+# main
+
+
 def main():
     pygame.init()
 
     size = (650, 600)
     color = {'background': (40, 42, 54), 'ball': (248, 248, 242), 'bar': (139, 233, 253),
              'targets': [(255, 85, 85), (241, 250, 140), (80, 250, 123)]}
-    bar_targets = {'targets_red': [], 'targets_yellow': [], 'targets_green': []}
+    bar_targets = {'targets_red': [],
+                   'targets_yellow': [], 'targets_green': []}
     speed_ball = [2.5, 2.5]
     direc_ball = [-2.5, -2.5]
     score = 0
     cor_text = (80, 250, 123)
 
-
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Breakout')
-    ball = pygame.Rect(630,580, 20, 20)
+    ball = pygame.Rect(630, 580, 20, 20)
     bar = pygame.Rect(0, 570, 150, 10)
     font = pygame.font.SysFont(None, 80)
-
 
     pygame.mouse.set_visible(False)
     clock = pygame.time.Clock()
     target(bar_targets)
-
 
     # loop
     while True:
@@ -133,10 +141,8 @@ def main():
             text1 = font.render(str(score), True, cor_text)
             screen.blit(text1, position)
 
-
         pygame.draw.ellipse(screen, color['ball'], ball)
         pygame.draw.rect(screen, color['bar'], bar)
-
 
         for i, line in enumerate(bar_targets):
             for targets in bar_targets[line]:
